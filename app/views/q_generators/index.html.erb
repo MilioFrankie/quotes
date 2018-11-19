@@ -1,3 +1,9 @@
-<h1>Welcome <%= current_user.first_name %> to Quotes Generator</h1>
+<h1><%= current_user.first_name %>! Welcome to Quotes Generator</h1>
 <hr />
 <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
+<br />
+<br />
+
+<% @q_generators.each do |q|%>
+  <p><%=q.message%></p>
+  <%end%>

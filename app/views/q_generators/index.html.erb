@@ -1,4 +1,4 @@
-<h1><%= current_user.first_name %>! Enjoy Some Quotes!</h1>
+<h1><%= current_user.first_name %>! Enjoy Some Q</h1>
 <hr />
 <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
 <br />
@@ -7,3 +7,4 @@
 <% @q_generators.each do |q|%>
   <p><%=q.message%></p>
   <%end%>
+  <%= link_to "Generate A Quote", q_generator_path(rand(@quote_count)) %>

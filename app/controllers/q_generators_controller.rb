@@ -2,7 +2,14 @@ class QGeneratorsController < ApplicationController
   before_action :set_q_generator, only: [:show, :edit, :update]
 
   def index
-    @q_generators = current_user.q_generators
+    @q_generators = current_user.q_generators.all
+    @quote_count = @q_generators.count 
+    if @quote_count == 0
+      @q_generators = generate_quotes(current_user)
+      @quote_count = @q_generators.count 
+    end
+
+
   end
 
   def show
@@ -14,6 +21,7 @@ class QGeneratorsController < ApplicationController
 
   def create
     @q_generator = current_user.q_generators.new(q_generator_params)
+
     if @q_generator.save
       redirect_to q_generators_path
     else
@@ -44,7 +52,17 @@ class QGeneratorsController < ApplicationController
   end
 
   def set_q_generator
-    @q_generator = current_user.q_generators.find(params[:id])
+    return @q_generator = QGenerator.find(params[:id])   if params[:id].to_i >= 1
+  end
+
+  def generate_quotes(current_user)
+    25.times do
+      QGenerator.create(
+          message: Faker::MichaelScott.quote,
+          user_id: current_user.id
+        )
+    end
+    QGenerator.find_by(user_id: current_user.id)
   end
 
 end
